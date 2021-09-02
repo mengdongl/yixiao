@@ -15,6 +15,7 @@ export const cleanObject = (object: { [index: string]: unknown }) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
@@ -27,6 +28,7 @@ export const useDebounce = <T>(value: T, delay?: number) => {
     return () => {
       clearTimeout(timeout);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return paramValue;
