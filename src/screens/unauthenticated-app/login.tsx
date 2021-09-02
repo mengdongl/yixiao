@@ -9,13 +9,11 @@ export const LoginScreen = () => {
     event.preventDefault();
     const username = (event.currentTarget.elements[0] as HTMLFormElement).value;
     const password = (event.currentTarget.elements[1] as HTMLFormElement).value;
-    console.log({ username, password });
     login({ username, password })
   };
 
   return (
     <form onSubmit={handleSubmit}>
-        用户名：{user?.name}  token:{user?.token}
       <div>
         <label htmlFor={"username"}>用户名</label>
         <input type="text" id={"username"} />
