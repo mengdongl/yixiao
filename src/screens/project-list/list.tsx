@@ -2,6 +2,7 @@ import React from "react";
 import { User } from "./search-panal";
 import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import dayjs from "dayjs";
 
 interface Project {
   id: number;
@@ -25,6 +26,19 @@ export const List = ({ list, users }: ListProps) => {
         return a.name.localeCompare(b.name);
       },
     },
+    { title: "部门", dataIndex: "organization" },
+    {
+      title: "创建时间",
+      render(value, project) {
+        return (
+          <span>
+            {project.created
+              ? dayjs(project.created).format("YYYY-MM-DD")
+              : "无"}
+          </span>
+        );
+      },
+    },
     {
       title: "负责人",
       render(value, project) {
@@ -36,5 +50,5 @@ export const List = ({ list, users }: ListProps) => {
       },
     },
   ];
-  return <Table pagination={false} columns={columns} dataSource={list}></Table>;
+  return <Table pagination={false} columns={columns} dataSource={list} rowKey={column => column.id} ></Table>;
 };
