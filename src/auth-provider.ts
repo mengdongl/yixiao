@@ -1,5 +1,5 @@
+import { http } from "utils/http";
 import { User } from "./screens/project-list/search-panal";
-const baseUrl = process.env.REACT_APP_API_URL;
 export const localTokenKey = "__auth_provider_token__";
 
 export const getToken = () => window.localStorage.getItem(localTokenKey);
@@ -10,35 +10,35 @@ export const handleUserResponse = ({ user }: { user: User }) => {
 };
 
 export const login = (data: { username: string; password: string }) => {
-  return fetch(`${baseUrl}/login`, {
+  return http(`/login`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
-  }).then(async (response) => {
-    if (response.ok) {
-      return handleUserResponse(await response.json());
-    } else {
-        return Promise.reject(data);
-      }
-  });
+    data,
+  })
+    .then(async (res) => {
+      return handleUserResponse(res);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
 };
 
 export const register = (data: { username: string; password: string }) => {
-  return fetch(`${baseUrl}/register`, {
+  return http(`/register`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
-  }).then(async (response) => {
-    if (response.ok) {
-      return handleUserResponse(await response.json());
-    } else {
-      return Promise.reject(data);
-    }
-  });
+    data,
+  })
+    .then(async (res) => {
+      return handleUserResponse(res);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
 };
 
 export const logout = async () => window.localStorage.removeItem(localTokenKey);

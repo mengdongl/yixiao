@@ -4,6 +4,8 @@ import { List } from "./list";
 import { cleanObject, useMount, useDebounce } from "utils/index";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
+import { useAsync } from "utils/use-async";
+import { Project } from './list'
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
@@ -11,17 +13,17 @@ export const ProjectListScreen = () => {
     personId: "",
   });
   const [users, setUsers] = useState([]);
-  const [list, setList] = useState([]);
 
   const client = useHttp()
+  const {run,isLoading,data:list} = useAsync<Project[]>()
 
-  const debouncedValue = useDebounce(param, 500);
+  const debouncedValue = useDebounce(param, 200);
   useMount(() => {
     client('/users').then(setUsers)
   });
 
   useEffect(() => {
-    client('/projects',{data:cleanObject(debouncedValue)}).then(setList)
+    run(client('/projects',{data:cleanObject(debouncedValue)}))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
   return (
@@ -32,7 +34,7 @@ export const ProjectListScreen = () => {
         setParam={setParam}
         users={users}
       ></SearchPanel>
-      <List list={list} users={users}></List>
+      <List loading={isLoading} dataSource={list || []} users={users}></List>
     </Container>
   );
 };

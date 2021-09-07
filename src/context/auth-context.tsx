@@ -1,8 +1,10 @@
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext } from "react";
 import * as auth from "auth-provider";
 import { User } from "screens/project-list/search-panal";
 import { useMount } from "utils";
 import { http } from "utils/http";
+import { useAsync } from "utils/use-async";
+import { FullPageError, FullPageLoading } from 'components/lib'
 
 interface AuthForm {
   username: string;
@@ -18,18 +20,32 @@ const AuthContext = React.createContext<Context | undefined>(undefined);
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: {children: ReactNode}) => {
-  const [user, setUser] = useState<User | null>(null);
   const login = (param: AuthForm) => auth.login(param).then((user) => setUser(user));
   const register = (param: AuthForm) => auth.register(param).then((user) => setUser(user));
   const logout = () => auth.logout().then(() => setUser(null));
 
-  useMount(async () => {
+  const {run,isLoading,isIdel,isError,error,setData:setUser,data:user} = useAsync<User| null>(undefined,{isThrowError:false})
+
+  const getUser = async () => {
     let token = auth.getToken()
     if(token){
      const data = await http('/me',{token: token})
      setUser(data.user)
+     return data.user
     }
+    return null
+  }
+  useMount(() => {
+    run(getUser())
   })
+
+  if(isLoading || isIdel){
+    return <FullPageLoading></FullPageLoading>
+  }
+
+  if(isError){
+    return <FullPageError error={error}></FullPageError>
+  }
 
   return (
     <AuthContext.Provider children={children} value={{ user, login, register, logout }}/>

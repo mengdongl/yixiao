@@ -1,10 +1,10 @@
 import React from "react";
 import { User } from "./search-panal";
 import { Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
+import { ColumnsType, TableProps } from "antd/lib/table";
 import dayjs from "dayjs";
 
-interface Project {
+export interface Project {
   id: number;
   name: string;
   personId: number;
@@ -12,12 +12,11 @@ interface Project {
   created: number;
 }
 
-interface ListProps {
-  list: Project[];
+interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
-export const List = ({ list, users }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => {
   const columns: ColumnsType<Project> = [
     {
       title: "名称",
@@ -50,5 +49,5 @@ export const List = ({ list, users }: ListProps) => {
       },
     },
   ];
-  return <Table pagination={false} columns={columns} dataSource={list} rowKey={column => column.id} ></Table>;
+  return <Table pagination={false} columns={columns} rowKey={column => column.id} {...props} ></Table>;
 };
