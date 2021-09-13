@@ -1,3 +1,4 @@
+import 'wdyr'
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -5,13 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { loadServer, DevTools } from 'jira-dev-tool'
 import 'antd/dist/antd.less'
 import { AppProviders } from "context/index";
+import {ErrorBoundary} from 'components/error-boundary'
+import {FullPageError} from 'components/lib'
 
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
       <AppProviders>
         <DevTools/>
+        <ErrorBoundary fallbackRender={FullPageError}>
         <App />
+        </ErrorBoundary>
       </AppProviders>
     </React.StrictMode>,
     document.getElementById("root")

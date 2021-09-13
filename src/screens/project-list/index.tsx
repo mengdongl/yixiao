@@ -6,12 +6,10 @@ import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { useAsync } from "utils/use-async";
 import { Project } from './list'
+import { useUrlParams } from "utils/url";
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param,setParam] = useUrlParams(['name','personId'])
   const [users, setUsers] = useState([]);
 
   const client = useHttp()
@@ -38,6 +36,8 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
+
+ProjectListScreen.whyDidYouRender = false
 
 const Container = styled.div`
 padding: 3.2rem;
