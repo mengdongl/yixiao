@@ -1,23 +1,38 @@
+import { AuthForm, bootstrapUser } from "./../context/auth-context";
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "screens/project-list/search-panal";
+import { appDispatch, rootState } from "store";
+import * as auth from "auth-provider";
 
-interface State {
-    user:User | null;
-    status: 'idel' | 'loading' | 'succeeded' | 'failed';
-    error:Error|null
+export interface State {
+  user: User | null;
 }
 const initialState: State = {
-    user:null,
-    status:'idel',
-    error:null
-}
+  user: null,
+};
 
 export const authSlice = createSlice({
-    name:'auth',
-    initialState,
-    reducers:{
-        setUser(state,action){
+  name: "auth",
+  initialState,
+  reducers: {
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+  },
+});
 
-        }
-    }
-})
+export const { setUser } = authSlice.actions;
+
+export const sleectUser = (state: rootState) => state.auth.user;
+
+export const login = (data: AuthForm) => (dispatch: appDispatch) =>
+  auth.login(data).then((res) => dispatch(setUser(res)));
+
+export const register = (data: AuthForm) => (dispatch: appDispatch) =>
+  auth.register(data).then((res) => dispatch(setUser(res)));
+
+export const logout = () => (dispatch: appDispatch) =>
+  auth.logout().then(() => dispatch(setUser(null)));
+
+export const bootstrap = () => (dispatch: appDispatch) =>
+  bootstrapUser().then((res) => dispatch(setUser(res)));

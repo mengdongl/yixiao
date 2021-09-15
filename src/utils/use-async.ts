@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "utils";
 interface State<D> {
   stat: "idel" | "loading" | "success" | "error";
   data: D | null;
@@ -12,10 +13,13 @@ const defaultState: State<null> = {
 };
 
 const defaultConfig = {
-  isThrowError:false
-}
+  isThrowError: false,
+};
 
-export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof defaultConfig) => {
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initalConfig?: typeof defaultConfig
+) => {
   const [state, setState] = useState<State<D>>({
     ...defaultState,
     ...initialState,
@@ -23,8 +27,10 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
 
   const throwConfig = {
     ...defaultConfig,
-    ...initalConfig
-  }
+    ...initalConfig,
+  };
+
+  const mountedRef = useMountedRef();
 
   const setData = (data: D) => {
     setState({
@@ -51,11 +57,17 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
       data: null,
       error: null,
     });
-    return promise.then(setData).catch((err:Error) => {
-      setError(err);
-      if(throwConfig.isThrowError) return Promise.reject(err);
-      return err
-    });
+    return promise
+      .then((res) => {
+        if (mountedRef.current)
+          setData(res)
+        return res
+      })
+      .catch((err: Error) => {
+        setError(err);
+        if (throwConfig.isThrowError) return Promise.reject(err);
+        return err;
+      });
   };
 
   return {

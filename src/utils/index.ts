@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
@@ -45,3 +45,16 @@ export const useArray = <T>(value: T[]) => {
   const add = (value: T) => setResultValue([...resultValue,value])
   return { value: resultValue, clear, removeIndex, add };
 };
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false)
+
+  useEffect(()=>{
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  })
+
+  return mountedRef
+}
