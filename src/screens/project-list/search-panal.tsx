@@ -1,5 +1,7 @@
-import { Input, Select, Form } from "antd";
+import { Input, Form } from "antd";
+import { IdSelect } from "components/id-select";
 import React from "react";
+import { Project } from "./list";
 
 export interface User {
   id: number;
@@ -8,36 +10,28 @@ export interface User {
 }
 
 interface SearchPanelProps {
-  param: {
-    name: string;
-    personId: string;
-  };
+  param: Partial<Pick<Project, "name" | "personId">>;
   setParam: (param: SearchPanelProps["param"]) => void;
   users: User[];
 }
 
 export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
   return (
-    <Form style={{marginBottom:'2rem'}} layout={'inline'}>
+    <Form style={{ marginBottom: "2rem" }} layout={"inline"}>
       <Form.Item>
         <Input
-          placeholder={'项目名'}
+          placeholder={"项目名"}
           value={param.name}
           onChange={(value) => setParam({ ...param, name: value.target.value })}
         ></Input>
       </Form.Item>
       <Form.Item>
-        <Select
-          value={users.length?param.personId:undefined}
+        <IdSelect
+          value={users.length ? param.personId : undefined}
+          defaultOptionName={"负责人"}
+          options={users}
           onChange={(value) => setParam({ ...param, personId: value })}
-        >
-          <Select.Option value={""}>{"负责人"}</Select.Option>
-          {users.map((user) => (
-            <Select.Option key={user.id} value={String(user.id)}>
-              {user.name}
-            </Select.Option>
-          ))}
-        </Select>
+        ></IdSelect>
       </Form.Item>
     </Form>
   );

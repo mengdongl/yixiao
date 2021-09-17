@@ -5,6 +5,7 @@ import { DevTools } from "jira-dev-tool";
 export const Row = styled.div<{
   marginRight?: boolean | number;
   marginBottom?: boolean | number;
+  between?:boolean;
 }>`
   display: flex;
   align-items: center;
@@ -14,6 +15,7 @@ export const Row = styled.div<{
       : props.marginBottom
       ? "2rem"
       : "0"};
+  justify-content: ${props => props.between?'space-between':''};
   & > * {
     margin-right: ${(props) =>
       typeof props.marginRight === "number"
@@ -40,6 +42,11 @@ export const FullPageError = ({ error }: { error: Error | null }) => (
     <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
   </FullPage>
 );
+
+export const ErrorBox = ({error}:{error:Error | undefined}) => {
+  if(!error) return null
+  return <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
+}
 
 const FullPage = styled.div`
   width: 100vw;

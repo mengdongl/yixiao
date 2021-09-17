@@ -1,9 +1,11 @@
 import React from "react";
 import { User } from "./search-panal";
-import { Table } from "antd";
+import { Button, Dropdown, Table, Menu } from "antd";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { useProjectModal, useProjectsQueryKey } from "./utils";
+import { useDeleteProject } from "utils/project";
 
 export interface Project {
   id: number;
@@ -24,9 +26,9 @@ export const List = ({ users, ...props }: ListProps) => {
       sorter(a, b) {
         return a.name.localeCompare(b.name);
       },
-      render(value, project){
-      return <Link to={String(project.id)}>{project.name}</Link>
-      }
+      render(value, project) {
+        return <Link to={String(project.id)}>{project.name}</Link>;
+      },
     },
     { title: "部门", dataIndex: "organization" },
     {
@@ -51,6 +53,47 @@ export const List = ({ users, ...props }: ListProps) => {
         );
       },
     },
+    {
+      render(value, project) {
+        return <More project={project} />;
+      },
+    },
   ];
-  return <Table pagination={false} columns={columns} rowKey={column => column.id} {...props} ></Table>;
+  return (
+    <Table
+      pagination={false}
+      columns={columns}
+      rowKey={(column) => column.id}
+      {...props}
+    ></Table>
+  );
+};
+
+const More = ({ project }: { project: Project }) => {
+  const { startEdit } = useProjectModal();
+  const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey());
+  const editProject = (id: number) => () => {
+    startEdit(id);
+  };
+  const confirmDeleteProject = (id: number) => () => {
+    deleteProject({ id });
+  };
+  const overlay = (
+    <Menu>
+      <Menu.Item onClick={editProject(project.id)} key={"edit"}>
+        编辑
+      </Menu.Item>
+      <Menu.Item
+        onClick={confirmDeleteProject(project.id)}
+        key={"delete"}
+      >
+        删除
+      </Menu.Item>
+    </Menu>
+  );
+  return (
+    <Dropdown overlay={overlay}>
+      <Button type={"link"}>...</Button>
+    </Dropdown>
+  );
 };

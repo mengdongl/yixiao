@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SearchPanel } from "./search-panal";
 import { List } from "./list";
-import { cleanObject, useMount, useDebounce } from "utils/index";
+import { useMount, useDebounce } from "utils/index";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
-import { useAsync } from "utils/use-async";
-import { Project } from './list'
-import { useUrlParams } from "utils/url";
+import { Row } from "components/lib";
+import { Button } from "antd";
+import { useProjects } from "utils/project";
+import { useProjectModal, useProjectsSearchParams } from "./utils";
 
 export const ProjectListScreen = () => {
-  const [param,setParam] = useUrlParams(['name','personId'])
+  const [param,setParam] = useProjectsSearchParams()
+  const {open} = useProjectModal()
   const [users, setUsers] = useState([]);
 
   const client = useHttp()
-  const {run,isLoading,data:list} = useAsync<Project[]>()
-
-  const debouncedValue = useDebounce(param, 200);
+  const {isLoading,data:list} = useProjects(useDebounce(param, 200))
+  // const {run,isLoading,data:list} = useAsync<Project[]>()
   useMount(() => {
     client('/users').then(setUsers)
   });
-
-  useEffect(() => {
-    run(client('/projects',{data:cleanObject(debouncedValue)}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue]);
+  
   return (
     <Container>
+      <Row between={true} marginBottom={4}>
       <h1>项目列表</h1>
+      <Button onClick={() => open()}>创建项目</Button>
+      </Row>
       <SearchPanel
         param={param}
         setParam={setParam}
