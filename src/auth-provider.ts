@@ -1,5 +1,5 @@
 import { http } from "utils/http";
-import { User } from "./screens/project-list/search-panal";
+import { User } from "./types/User";
 export const localTokenKey = "__auth_provider_token__";
 
 export const getToken = () => window.localStorage.getItem(localTokenKey);

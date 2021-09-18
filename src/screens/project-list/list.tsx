@@ -1,19 +1,12 @@
 import React from "react";
-import { User } from "./search-panal";
+import { User } from "../../types/User";
 import { Button, Dropdown, Table, Menu } from "antd";
 import { ColumnsType, TableProps } from "antd/lib/table";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { useProjectModal, useProjectsQueryKey } from "./utils";
 import { useDeleteProject } from "utils/project";
-
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  organization: string;
-  created: number;
-}
+import { Project } from "types/project";
 
 interface ListProps extends TableProps<Project> {
   users: User[];

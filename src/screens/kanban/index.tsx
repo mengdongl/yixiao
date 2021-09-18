@@ -1,21 +1,39 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { sleectUser, setUser } from 'store/auth.slice'
-import { useAuth } from 'context/auth-context'
+import styled from "@emotion/styled";
+import { Spin } from "antd";
+import { ScreenContainer } from "components/lib";
+import React from "react";
+import { useKanbans } from "utils/kanban";
+import { CreateKanban } from "./create-kanban";
+import { KanbanColumn } from "./kanban-column";
+import { SearchPanel } from "./search-panel";
+import { TaskModal } from "./task-modal";
+import { useKanbanSearchParams, useProjectInUrl } from "./utils";
 
 export const KanbanScreen = () => {
-    const {user:contextUser} = useAuth()
-    const user = useSelector(sleectUser)
-    const dispatch = useDispatch()
-    const getUser = () => {
-        console.log(contextUser)
-        dispatch(setUser({user:contextUser}))
-    }
+  const { data: currentProject } = useProjectInUrl();
+  const { data: kanbans, isLoading: kanbanIsLoading } = useKanbans(
+    useKanbanSearchParams()
+  );
+  const isLoading = kanbanIsLoading;
+  return (
+    <ScreenContainer>
+      <h1>{currentProject?.name}看板</h1>
+      <SearchPanel/>
+      {isLoading ? (
+        <Spin size={"large"}></Spin>
+      ) : (
+        <ColumnsContainer>
+        {kanbans?.map(kanban => (<KanbanColumn kanban={kanban} key={kanban.id}></KanbanColumn>))}
+        <CreateKanban/>
+        </ColumnsContainer>
+      )}
+      <TaskModal/>
+    </ScreenContainer>
+  );
+};
 
-    return <div>
-        <span>看板</span>
-        <button onClick={getUser}>获取user</button>
-<span>展示username: {user?.name}</span>
-<span>展示usertoken: {user?.token}</span>
-    </div>
-}
+export const ColumnsContainer = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  flex: 1;
+`;

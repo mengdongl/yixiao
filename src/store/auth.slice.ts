@@ -1,6 +1,6 @@
 import { AuthForm, bootstrapUser } from "./../context/auth-context";
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "screens/project-list/search-panal";
+import { User } from "types/User";
 import { appDispatch, rootState } from "store";
 import * as auth from "auth-provider";
 

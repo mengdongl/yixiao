@@ -67,7 +67,7 @@ const PageHeader = () => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 6rem 1fr 6rem;
+  grid-template-rows: 6rem 1fr;
   grid-template-columns: 20rem 1fr 20rem;
   grid-template-areas:
     "header header header"

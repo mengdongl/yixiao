@@ -1,7 +1,7 @@
 import { useHttp } from "./http";
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { cleanObject } from "utils";
-import { Project } from "screens/project-list/list";
+import { Project } from "types/project";
 import { useAddConfig, useDeleteConfig, useEditConfig } from 'utils/use-optimistic-options'
 
 export const useProjects = (param?: Partial<Project>) => {

@@ -5,7 +5,7 @@ import { ErrorBox } from "components/lib";
 import { UserSelect } from "components/user-select";
 import React, { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/project";
-import { Project } from "./list";
+import { Project } from "types/project";
 import { useProjectModal, useProjectsQueryKey } from "./utils";
 
 export const ProjectModal = () => {
