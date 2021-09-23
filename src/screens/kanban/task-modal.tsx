@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { EpicSelect } from "components/epic-select";
+import { ErrorBox } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
 import React, { useEffect } from "react";
@@ -12,7 +13,7 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 export const TaskModal = () => {
-  const { editingTaskId, editingTask, isLoading, close } = useTaskModal();
+  const { editingTaskId, error, editingTask, isLoading, close } = useTaskModal();
   const {mutateAsync:editTask,isLoading:editLoading} = useEditTask(useTaskQueryKey())
   const [form] = useForm();
 
@@ -40,6 +41,7 @@ export const TaskModal = () => {
       confirmLoading={editLoading}
       title={"编辑任务"}
     >
+      <ErrorBox error={error as Error}></ErrorBox>
       {isLoading ? (
         <Spin size={"large"}></Spin>
       ) : (

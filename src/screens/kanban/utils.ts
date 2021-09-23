@@ -36,7 +36,7 @@ export const useTaskQueryKey = () => ["tasks", useTaskSearchParams()];
 
 export const useTaskModal = () => {
   const [{ editingTaskId }, setEditingTaskId] = useUrlParams(["editingTaskId"]);
-  const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
+  const { data: editingTask, isLoading, error } = useTask(Number(editingTaskId));
   const startEdit = useCallback(
     (id: number) => setEditingTaskId({ editingTaskId: id }),
     [setEditingTaskId]
@@ -47,6 +47,7 @@ export const useTaskModal = () => {
   return {
     editingTaskId,
     editingTask,
+    error,
     isLoading,
     startEdit,
     close
