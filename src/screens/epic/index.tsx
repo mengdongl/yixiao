@@ -1,7 +1,7 @@
 import { Button, List, Modal } from "antd";
 import { Row, ScreenContainer } from "components/lib";
 import dayjs from "dayjs";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useProjectInUrl } from "screens/kanban/utils";
 import { Epic } from "types/epic";
@@ -16,7 +16,6 @@ export const EpicScreen = () => {
   const { data: tasks } = useTasks({ projectId: currentProject?.id });
   const { mutate: deleteEpic } = useDeleteEpic(useEpicsQueryKey());
   const [epicCreateOpen, setEpicCreateOpen] = useState(false);
-  const h1Ref = useRef<HTMLHeadingElement | null>(null)
   const confirmDeleteEpic = (epic: Epic) => {
     Modal.confirm({
       title: `确定删除项目组：${epic.name}`,
@@ -30,9 +29,8 @@ export const EpicScreen = () => {
   return (
     <ScreenContainer>
       <Row between={true}>
-        <h1 ref={ref => { h1Ref.current = ref}}>{currentProject?.name}任务组</h1>
+        <h1>{currentProject?.name}任务组</h1>
         <Button onClick={() => setEpicCreateOpen(true)}>创建任务组</Button>
-        <Button onClick={() => {console.log('h1 fontsize:',h1Ref.current?.style)}}>获取任务组ref</Button>
       </Row>
       <List
         style={{ overflow: "scroll" }}
