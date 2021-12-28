@@ -29,7 +29,6 @@
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2"
   },
-  "homepage": "https://mengdongl.github.io/yixiao",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
