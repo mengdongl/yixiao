@@ -2,7 +2,7 @@ import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
-import { ReactComponent as SoftWareLogo } from "assets/software-logo.svg";
+// import { ReactComponent as SoftWareLogo } from "assets/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
 import {
   BrowserRouter as Router,
@@ -39,18 +39,24 @@ const PageHeader = () => {
   return (
     <Header>
       <HeaderLeft marginRight={true} marginBottom={false}>
-        <SoftWareLogo
-          width={"18rem"}
-          color={"rgb(38, 132, 255)"}
-        ></SoftWareLogo>
-        <h3>项目</h3>
-        <h3>用户</h3>
+        <SoftWareLogo>
+          <Icon src="/logo-simple.png" />
+          <Title>亿效</Title>
+        </SoftWareLogo>
+        <NavMenu mode="horizontal">
+          <Menu.Item key="projects" style={{ fontSize: "1.4rem" }}>
+            项目
+          </Menu.Item>
+          <Menu.Item key="user" style={{ fontSize: "1.4rem" }}>
+            用户
+          </Menu.Item>
+        </NavMenu>
       </HeaderLeft>
       <HeaderRight>
         <Dropdown
           overlay={
             <Menu>
-              <Menu.Item>
+              <Menu.Item key={"logout"}>
                 <Button type={"link"} onClick={() => logout()}>
                   登出
                 </Button>
@@ -58,7 +64,10 @@ const PageHeader = () => {
             </Menu>
           }
         >
-          <Button type={"link"}>Hi, {user?.name}</Button>
+          <UserContainer>
+            <img src="/tx.png" alt=""/>
+            <div>Hi, {user?.name}</div>
+          </UserContainer>
         </Dropdown>
       </HeaderRight>
     </Header>
@@ -80,11 +89,62 @@ const Container = styled.div`
 const Header = styled(Row)`
   grid-area: header;
   justify-content: space-between;
-  padding: 3.2rem;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+  height: 50px;
+  background-color: #373d41;
+  -webkit-box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
   z-index: 1;
 `;
 const HeaderLeft = styled(Row)``;
+const SoftWareLogo = styled.div`
+  height: 50px;
+  line-height: 50px;
+  background: #373d41;
+  text-align: center;
+  overflow: hidden;
+  padding: 0 16px;
+`;
+const Icon = styled.img`
+  width: auto;
+  height: 28px;
+  vertical-align: middle;
+  margin-right: 8px;
+`;
+const Title = styled.div`
+  display: inline-block;
+  margin: 0;
+  color: #fff;
+  font-weight: 600;
+  line-height: 50px;
+  font-size: 16px;
+`;
+const NavMenu = styled(Menu)`
+  height: 50px;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.65);
+  border-bottom-color: transparent;
+  background-color: rgb(55, 61, 65);
+`;
+const UserContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2rem;
+  cursor: pointer;
+  & > img {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  & > div {
+    font-size: 1.4rem;
+    color: hsla(0,0%,100%,.65);
+    vertical-align: middle;
+  }
+`;
 const HeaderRight = styled.div``;
 const Main = styled.main`
   grid-area: main;

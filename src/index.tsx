@@ -8,7 +8,15 @@ import 'antd/dist/antd.less'
 import { AppProviders } from "context/index";
 import {ErrorBoundary} from 'components/error-boundary'
 import {FullPageError} from 'components/lib'
-
+// 输出当前目录（不一定是代码所在的目录）下的文件和文件夹
+// exec('ls -l', (err:any, stdout:any, stderr:any) => {
+//     if(err) {
+//         console.log(err);
+//         return;
+//     }
+//     console.log(`stdout: ${stdout}`);
+//     console.log(`stderr: ${stderr}`);
+// })
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
