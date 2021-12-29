@@ -21,12 +21,19 @@ export const http = async (
     },
     ...customConfig,
   };
+  let requestUrl = ''
   if (config.method.toUpperCase() === "GET") {
     endpoint += `?${qs.stringify(data)}`;
   } else {
     config.body = JSON.stringify(data || {});
   }
-  return fetch(`${apiUrl}${endpoint}`, config).then(async (response) => {
+  const regx = new RegExp(/^(https?)/)
+  if (regx.test(endpoint)) {
+    requestUrl = endpoint
+  } else {
+    requestUrl = `${apiUrl}${endpoint}`
+  }
+  return fetch(requestUrl, config).then(async (response) => {
     if (response.status === 401) {
       await auth.logout();
       window.location.reload();

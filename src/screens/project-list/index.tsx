@@ -19,6 +19,9 @@ export const ProjectListScreen = () => {
   // const {run,isLoading,data:list} = useAsync<Project[]>()
   useMount(() => {
     client('/users').then(setUsers)
+    client('https://my-json-server.typicode.com/mengdongl/yixiao/users').then(res => {
+      console.log(res)
+    })
   });
   
   return (
