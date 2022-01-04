@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { Row } from "components/lib";
 // import { ReactComponent as SoftWareLogo } from "assets/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -34,8 +35,14 @@ export const AuthenticatedApp = () => {
   );
 };
 
+type NavMenuProps = React.ComponentProps<typeof Menu>;
+
 const PageHeader = () => {
   const { logout, user } = useAuth();
+  const navigate = useNavigate();
+  const handleNav: NavMenuProps["onClick"] = ({ key, keyPath, domEvent }) => {
+    navigate("/" + key);
+  };
   return (
     <Header>
       <HeaderLeft marginRight={true} marginBottom={false}>
@@ -43,7 +50,7 @@ const PageHeader = () => {
           <Icon src="/logo-simple.png" />
           <Title>亿效</Title>
         </SoftWareLogo>
-        <NavMenu mode="horizontal">
+        <NavMenu mode="horizontal" onClick={handleNav}>
           <Menu.Item key="projects" style={{ fontSize: "1.4rem" }}>
             项目
           </Menu.Item>
@@ -65,7 +72,7 @@ const PageHeader = () => {
           }
         >
           <UserContainer>
-            <img src="/tx.png" alt=""/>
+            <img src="/tx.png" alt="" />
             <div>Hi, {user?.name}</div>
           </UserContainer>
         </Dropdown>
@@ -89,7 +96,7 @@ const Container = styled.div`
 const Header = styled(Row)`
   grid-area: header;
   justify-content: space-between;
-  height: 50px;
+  height: 100%;
   background-color: #373d41;
   -webkit-box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
   box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
@@ -97,7 +104,7 @@ const Header = styled(Row)`
 `;
 const HeaderLeft = styled(Row)``;
 const SoftWareLogo = styled.div`
-  height: 50px;
+  height: 100%;
   line-height: 50px;
   background: #373d41;
   text-align: center;
@@ -141,7 +148,7 @@ const UserContainer = styled.div`
   }
   & > div {
     font-size: 1.4rem;
-    color: hsla(0,0%,100%,.65);
+    color: hsla(0, 0%, 100%, 0.65);
     vertical-align: middle;
   }
 `;

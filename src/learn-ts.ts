@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export type Action =
   | {
       type: "INIT";
@@ -27,6 +25,9 @@ type ExtractActionParameters<A, T> = A extends { type: T }
 
 type ExtractSimpleAction<A> = A extends any ? {} extends ExcluedKey<A, "type"> ? A : never : never
 
+type T1 = Parameters<(s: string,a:number) => void>;
+
+let a: [s:string,a:number] = ['d',12]
 type SimpleAction = ExtractSimpleAction<Action>['type']
 
 declare function dispatch(action: Action): void;
@@ -50,4 +51,4 @@ dispatch("LOG_IN_SUCCESS",{accessToken:'d'});
 
 // Type Error! :)
 
-dispatch("BAD_TYPE");
+// dispatch("BAD_TYPE");
