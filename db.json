@@ -53,5 +53,19 @@
       "organization": "外卖组",
       "created": 1546900800000
     }
+  ],
+  "projectType":[
+    {
+      "name":"研发类",
+      "id":1
+    },
+    {
+      "name":"日报类",
+      "id":2
+    },
+    {
+      "name":"测试类",
+      "id":3
+    }
   ]
 }

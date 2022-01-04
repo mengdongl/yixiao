@@ -4,8 +4,7 @@ import { Select } from "antd";
 type SelectProps = React.ComponentProps<typeof Select>;
 
 type Raw = number|string
-interface IdSelectProps
-  extends Omit<SelectProps, "value" | "onChange" | "options"> {
+interface IdSelectProps extends Omit<SelectProps, "value" | "onChange" | "options"> {
   value?: Raw | null | undefined;
   onChange?: (value?: number) => void;
   defaultOptionName?: string;

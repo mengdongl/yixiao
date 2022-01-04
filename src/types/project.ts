@@ -4,4 +4,5 @@ export interface Project {
     personId: number;
     organization: string;
     created: number;
+    type:string
   }

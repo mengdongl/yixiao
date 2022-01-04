@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/project";
 import { Project } from "types/project";
 import { useProjectModal, useProjectsQueryKey } from "./utils";
+import { ProjectTypeSelect } from "components/project-type-select";
 
 export const ProjectModal = () => {
   const {
@@ -69,6 +70,11 @@ export const ProjectModal = () => {
 
               <Form.Item label={"负责人"} name={"personId"}>
                 <UserSelect defaultOptionName={'负责人'}></UserSelect>
+              </Form.Item>
+
+              <Form.Item label={"项目类型"} name={"personId"}>
+                {/* <UserSelect defaultOptionName={'负责人'}></UserSelect> */}
+                <ProjectTypeSelect></ProjectTypeSelect>
               </Form.Item>
 
               <Form.Item style={{ textAlign: "right" }}>

@@ -27,7 +27,6 @@ export const useProjectModal = () => {
   ]);
   const setUrlParams = useSetUrlParams()
   const {data:editingProject,isLoading} = useProject(Number(editingProjectId))
-
   const open = () => {
     setProjectCreate({projectCreate: true})
   }
