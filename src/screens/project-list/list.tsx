@@ -5,7 +5,7 @@ import { ColumnsType, TableProps } from "antd/lib/table";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { useProjectModal, useProjectsQueryKey } from "./utils";
-import { useDeleteProject } from "utils/project";
+import { useDeleteProject, useProjectTypes } from "utils/project";
 import { Project } from "types/project";
 import styled from "@emotion/styled";
 
@@ -14,11 +14,12 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List = ({ users, ...props }: ListProps) => {
+  const {data:types} = useProjectTypes()
   const columns: ColumnsType<Project> = [
     {
       width: 80,
       render(value, project) {
-        return <Tag color={"green"}>{"项目"}</Tag>;
+        return <Tag color={"green"}>{types?.find(item => item.id === project.type)?.name}</Tag>;
       },
     },
     {

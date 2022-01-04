@@ -3,7 +3,7 @@ import { useProjectTypes } from "utils/project";
 import { IdSelect } from "./id-select";
 
 export const ProjectTypeSelect = (props:React.ComponentProps<typeof IdSelect>) => {
-  const { data: types } = useProjectTypes<{ name: string; id: number }[]>();
+  const { data: types } = useProjectTypes();
   if (types) {
     return <IdSelect options={types} {...props}></IdSelect>;
   } else {

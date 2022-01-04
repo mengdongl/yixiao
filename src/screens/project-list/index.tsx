@@ -6,14 +6,13 @@ import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { Button } from "antd";
-import { useProjects } from "utils/project";
+import { useProjects, useProjectTypes } from "utils/project";
 import { useProjectModal, useProjectsSearchParams } from "./utils";
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useProjectsSearchParams();
   const { open } = useProjectModal();
   const [users, setUsers] = useState([]);
-
   const client = useHttp();
   const { isLoading, data: list } = useProjects(useDebounce(param, 200));
   // const {run,isLoading,data:list} = useAsync<Project[]>()

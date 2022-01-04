@@ -29,6 +29,11 @@ export const ProjectModal = () => {
     form.resetFields()
     close();
   }
+  useEffect(() => {
+    if(!editingProject) {
+      form.setFields([{name:'type',value:1}])
+    }
+  },[projectModalOpen])
   useEffect(()=>{
     form.setFieldsValue(editingProject)
   },[editingProject,form])
@@ -72,11 +77,9 @@ export const ProjectModal = () => {
                 <UserSelect defaultOptionName={'负责人'}></UserSelect>
               </Form.Item>
 
-              <Form.Item label={"项目类型"} name={"personId"}>
-                {/* <UserSelect defaultOptionName={'负责人'}></UserSelect> */}
+              <Form.Item label={"项目类型"} name={"type"}>
                 <ProjectTypeSelect></ProjectTypeSelect>
               </Form.Item>
-
               <Form.Item style={{ textAlign: "right" }}>
                 <Button
                   type={"primary"}
