@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
+import { URLSearchParamsInit, useSearchParams, useLocation } from "react-router-dom";
 import { cleanObject, subset } from "utils";
 
 export const useUrlParams = <K extends string>(keys: K[]) => {
@@ -30,4 +30,9 @@ export const useSetUrlParams = () => {
     }) as URLSearchParamsInit;
     return setSearchParams(o);
   };
+};
+
+export const useRouteType = () => {
+  const units = useLocation().pathname.split("/");
+  return units;
 };

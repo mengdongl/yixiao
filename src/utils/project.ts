@@ -11,9 +11,16 @@ import { useAsync } from "utils/use-async";
 import { useEffect, useMemo } from "react";
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
-  return useQuery<Project[]>(["projects", cleanObject(param)], () =>
-    client("/projects", { data: param })
-  );
+  // return useQuery<Project[]>(["projects", cleanObject(param)], () =>
+  //   client("/projects", { data: param })
+  // );
+  const {run,...rest} = useAsync<Project[]>(undefined, { isThrowError: true });
+  useEffect(() => {
+    run(client("/projects", { data: param }))
+  },[param])
+  return {
+    ...rest
+  }
 };
 
 export const useProject = (id?: number) => {

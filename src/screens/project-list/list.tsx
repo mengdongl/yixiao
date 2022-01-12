@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { User } from "../../types/User";
 import { Button, Dropdown, Table, Menu, Tag, Progress } from "antd";
 import { ColumnsType, TableProps } from "antd/lib/table";
@@ -8,18 +8,23 @@ import { useProjectModal, useProjectsQueryKey } from "./utils";
 import { useDeleteProject, useProjectTypes } from "utils/project";
 import { Project } from "types/project";
 import styled from "@emotion/styled";
+import {ProjectListContext} from './index'
 
 interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
-export const List = ({ users, ...props }: ListProps) => {
-  const {data:types} = useProjectTypes()
+export const List = ({ users ,...props }: ListProps) => {
+  const { data: types } = useProjectTypes();
   const columns: ColumnsType<Project> = [
     {
       width: 80,
       render(value, project) {
-        return <Tag color={"green"}>{types?.find(item => item.id === project.type)?.name}</Tag>;
+        return (
+          <Tag color={"green"}>
+            {types?.find((item) => item.id === project.type)?.name}
+          </Tag>
+        );
       },
     },
     {
@@ -47,7 +52,9 @@ export const List = ({ users, ...props }: ListProps) => {
       render(value, project) {
         return (
           <div>
-            <span style={{color:'rgb(96, 98, 102)',fontSize:'1.2rem'}}>已完成1134条 / 共1134条</span>
+            <span style={{ color: "rgb(96, 98, 102)", fontSize: "1.2rem" }}>
+              已完成1134条 / 共1134条
+            </span>
             <Progress percent={90} showInfo={false}></Progress>
           </div>
         );
@@ -73,8 +80,8 @@ export const List = ({ users, ...props }: ListProps) => {
     },
     {
       width: 100,
-      render(value, project) {
-        return <More project={project} />;
+      render(value, project, index) {
+        return <More project={project} index={index}/>;
       },
     },
   ];
@@ -89,7 +96,13 @@ export const List = ({ users, ...props }: ListProps) => {
   );
 };
 
-const More = ({ project }: { project: Project }) => {
+const More = ({
+  project,
+  index
+}: {
+  project: Project;
+  index:number
+}) => {
   const { startEdit } = useProjectModal();
   const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey());
   const editProject = (id: number) => () => {
@@ -98,9 +111,14 @@ const More = ({ project }: { project: Project }) => {
   const confirmDeleteProject = (id: number) => () => {
     deleteProject({ id });
   };
+  const context = useContext(ProjectListContext)
+  const toTop = context ? context.toTop : (index:number) => {}
   const overlay = (
     <Menu>
-      <Menu.Item onClick={editProject(project.id)} key={"top"}>
+      <Menu.Item
+        key={"top"}
+        onClick={() => {toTop(index)}}
+      >
         置顶
       </Menu.Item>
       <Menu.Item onClick={editProject(project.id)} key={"edit"}>

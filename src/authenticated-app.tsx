@@ -13,6 +13,8 @@ import {
 } from "react-router-dom";
 import { ProjectScreen } from "screens/project/index";
 import { ProjectModal } from "screens/project-list/project-modal";
+import { useRouteType } from "utils/url";
+import { WorkListScreen } from "screens/works";
 
 export const AuthenticatedApp = () => {
   return (
@@ -21,12 +23,13 @@ export const AuthenticatedApp = () => {
         <PageHeader></PageHeader>
         <Main>
           <Routes>
+            <Route path={"/works"} element={<WorkListScreen/>}></Route>
             <Route path={"/projects"} element={<ProjectListScreen />}></Route>
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             ></Route>
-            <Navigate to={"/projects"}></Navigate>
+            <Navigate to={"/works"}></Navigate>
           </Routes>
         </Main>
         <ProjectModal />
@@ -43,6 +46,7 @@ const PageHeader = () => {
   const handleNav: NavMenuProps["onClick"] = ({ key, keyPath, domEvent }) => {
     navigate("/" + key);
   };
+  const selectedRoutes = useRouteType()
   return (
     <Header>
       <HeaderLeft marginRight={true} marginBottom={false}>
@@ -50,12 +54,12 @@ const PageHeader = () => {
           <Icon src="/logo-simple.png" />
           <Title>亿效</Title>
         </SoftWareLogo>
-        <NavMenu mode="horizontal" onClick={handleNav}>
+        <NavMenu mode="horizontal" onClick={handleNav} selectedKeys={selectedRoutes}>
+          <Menu.Item key="works" style={{ fontSize: "1.4rem" }}>
+            工作台
+          </Menu.Item>
           <Menu.Item key="projects" style={{ fontSize: "1.4rem" }}>
             项目
-          </Menu.Item>
-          <Menu.Item key="user" style={{ fontSize: "1.4rem" }}>
-            用户
           </Menu.Item>
         </NavMenu>
       </HeaderLeft>
