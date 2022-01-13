@@ -7,7 +7,7 @@ import { CreateKanban } from "./create-kanban";
 import { KanbanColumn } from "./kanban-column";
 import { SearchPanel } from "./search-panel";
 import { TaskModal } from "./task-modal";
-import { useKanbanSearchParams, useProjectInUrl } from "./utils";
+import { useKanbanSearchParams, useProjectInUrl, useTaskQueryKey } from "./utils";
 
 export const KanbanScreen = () => {
   const { data: currentProject } = useProjectInUrl();
@@ -27,7 +27,7 @@ export const KanbanScreen = () => {
         <CreateKanban/>
         </ColumnsContainer>
       )}
-      <TaskModal/>
+      {currentProject ? <TaskModal/> : null}
     </ScreenContainer>
   );
 };

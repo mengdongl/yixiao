@@ -3,15 +3,16 @@ import { Tabs, Button } from "antd";
 import { SearchPanel } from "./search-panal";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
-import { useUrlParams } from "utils/url";
 import { useWorksSearchParams } from "./utils";
+import { useSetUrlParams } from "utils/url";
 
 export const WorkList = () => {
   const navigate = useNavigate();
   const handleNav = (route: string) => {
     navigate(route);
   };
-  const [{taskFrom},setParam] = useWorksSearchParams()
+  const {taskFrom} = useWorksSearchParams()
+  const setParam  = useSetUrlParams()
   const handleChange = (activeKey:string) =>{
     setParam({taskFrom:activeKey})
   }
@@ -49,7 +50,6 @@ const Container = styled.div`
     margin: 0;
   }
   & > .ant-tabs-card .ant-tabs-content {
-    height: 120px;
     margin-top: -16px;
   }
   & > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {

@@ -1,17 +1,20 @@
 import styled from "@emotion/styled";
-import { Button, Card, Col, Progress, Row } from "antd";
+import { Button, Card, Col, Progress, Row, Spin } from "antd";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router";
+import { TaskModal } from "screens/kanban/task-modal";
 import { Project } from "types/project";
 import { User } from "types/User";
 import { useProjects, useProjectTypes } from "utils/project";
 import { useUser } from "utils/user";
+import { useWorkQueryKey } from "./utils";
 import { WorkList } from "./work-list";
 
-const WorkListContext = React.createContext<{
+export const WorkListContext = React.createContext<{
   users: User[];
   projectTypes: { name: string; id: number }[];
-}>({ users: [], projectTypes: [] });
+  taskStatus:{name:string,id:number}[]
+}>({ users: [], projectTypes: [], taskStatus:[] });
 export const WorkListScreen = () => {
   const { data: users } = useUser();
   const { data: projectTypes } = useProjectTypes();
@@ -22,6 +25,7 @@ export const WorkListScreen = () => {
         value={{
           users: users ? users : [],
           projectTypes: projectTypes ? projectTypes : [],
+          taskStatus:[{name:'新建',id:1},{name:'进行中',id:2},{name:'完成',id:3}]
         }}
       >
         <Top>
@@ -42,7 +46,7 @@ export const ProjectItems = () => {
   const handleNav = (route: string) => {
     navigate(route);
   };
-  if (isLoading) return null;
+  if (isLoading) return <Spin size={"large"}></Spin>;
   return (
     <Row gutter={16}>
       {list.map((project) => {

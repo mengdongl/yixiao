@@ -15,6 +15,7 @@ import { ProjectScreen } from "screens/project/index";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { useRouteType } from "utils/url";
 import { WorkListScreen } from "screens/works";
+import { TaskModal } from "screens/kanban/task-modal";
 
 export const AuthenticatedApp = () => {
   return (
@@ -33,6 +34,7 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Main>
         <ProjectModal />
+        <TaskModal/>
       </Router>
     </Container>
   );

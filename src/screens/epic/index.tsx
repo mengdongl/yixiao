@@ -1,7 +1,7 @@
 import { Button, List, Modal } from "antd";
 import { Row, ScreenContainer } from "components/lib";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProjectInUrl } from "screens/kanban/utils";
 import { Epic } from "types/epic";
@@ -13,7 +13,7 @@ import { useEpicSearchParams, useEpicsQueryKey } from "./utils";
 export const EpicScreen = () => {
   const { data: currentProject } = useProjectInUrl();
   const { data: epics } = useEpics(useEpicSearchParams());
-  const { data: tasks } = useTasks({ projectId: currentProject?.id });
+  const { data: tasks } = useTasks(useMemo(() =>({ projectId: currentProject?.id }),[currentProject]));
   const { mutate: deleteEpic } = useDeleteEpic(useEpicsQueryKey());
   const [epicCreateOpen, setEpicCreateOpen] = useState(false);
   const confirmDeleteEpic = (epic: Epic) => {

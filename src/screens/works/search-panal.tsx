@@ -1,25 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Tabs } from "antd";
 import { List } from "./list";
-import styled from "@emotion/styled";
 import { useWorksSearchParams } from "./utils";
+import { IdSelect } from "components/id-select";
+import { useTaskTypes } from "utils/task-type";
+import { WorkListContext } from ".";
+import { useSetUrlParams } from "utils/url";
 
 export const SearchPanel = () => {
-  const [{ taskType}, setParam] = useWorksSearchParams();
+  const { typeId, status } = useWorksSearchParams();
+  const setParam = useSetUrlParams();
+  const { data: taskTypes } = useTaskTypes();
   const handleChange = (activeKey: string) => {
-    setParam({ taskType: activeKey});
+    setParam({ typeId: activeKey });
+  };
+
+  const { taskStatus: statusList } = useContext(WorkListContext);
+  const OperationsSlot = {
+    right: (
+      <IdSelect
+        options={statusList}
+        value={status}
+        placeholder={"状态"}
+        defaultOptionName={"全部"}
+        onChange={(value) => {
+          setParam({ status: value });
+        }}
+        style={{ width: "100px" }}
+      ></IdSelect>
+    ),
   };
   return (
-    <Tabs type="card" activeKey={taskType} onChange={handleChange}>
-      <Tabs.TabPane tab={`bug  0`} key="bug">
-        <List></List>
-      </Tabs.TabPane>
-      <Tabs.TabPane tab={`任务  80`} key="task">
-        <List></List>
-      </Tabs.TabPane>
-      <Tabs.TabPane tab={`需求  0`} key="rp">
-        <List></List>
-      </Tabs.TabPane>
+    <Tabs
+      type="card"
+      activeKey={typeId ? String(typeId) : String(taskTypes?.[0].id)}
+      defaultValue={taskTypes?.[0].id}
+      onChange={handleChange}
+      tabBarExtraContent={OperationsSlot}
+    >
+      {taskTypes?.map((type) => (
+        <Tabs.TabPane tab={type.name} key={type.id}>
+          <List
+            taskTypes={taskTypes}
+          ></List>
+        </Tabs.TabPane>
+      ))}
     </Tabs>
   );
 };

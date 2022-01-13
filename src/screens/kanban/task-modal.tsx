@@ -4,9 +4,10 @@ import { EpicSelect } from "components/epic-select";
 import { ErrorBox } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useWorkQueryKey } from "screens/works/utils";
 import { useEditTask } from "utils/task";
-import { useTaskModal, useTaskQueryKey } from "./utils";
+import { useProjectIdInUrl, useTaskModal, useTaskQueryKey } from "./utils";
 
 const layout = {
   labelCol: { span: 8 },
@@ -14,7 +15,8 @@ const layout = {
 };
 export const TaskModal = () => {
   const { editingTaskId, error, editingTask, isLoading, close } = useTaskModal();
-  const {mutateAsync:editTask,isLoading:editLoading} = useEditTask(useTaskQueryKey())
+  const taskQueryKey = useTaskQueryKey()
+  const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(taskQueryKey);
   const [form] = useForm();
 
   const onCancel = () => {
@@ -22,9 +24,14 @@ export const TaskModal = () => {
     form.resetFields();
   };
   const onOk = async () => {
-      await editTask({...editingTask,...form.getFieldsValue()})
-      close()
-      form.resetFields()
+    await editTask({
+      ...editingTask,
+      ...form.getFieldsValue(),
+      status: editingTask?.status ? editingTask?.status : 1,
+    });
+
+    close();
+    form.resetFields();
   };
 
   useEffect(() => {
