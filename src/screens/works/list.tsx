@@ -24,7 +24,7 @@ export const List = ({
     taskFrom:param.taskFrom,
     status:param.status,
   }),[param])
-  const { data: tasks } = useTasks(paramMemo);
+  const { data: tasks, isLoading } = useTasks(paramMemo);
   const { taskStatus: statusList } = useContext(WorkListContext);
   const { startEdit } = useTaskModal();
   const columns: ColumnsType<Task> = [
@@ -68,6 +68,7 @@ export const List = ({
       columns={columns}
       rowKey={(column) => column.id}
       showHeader={false}
+      loading={isLoading}
     ></Table>
   );
 };

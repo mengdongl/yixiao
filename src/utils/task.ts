@@ -16,8 +16,13 @@ export const useTasks = (param?: Partial<Task>) => {
   useEffect(() => {
     run(client("/tasks", { data: param }));
   }, [param]);
+
+  const refresh = (param?: Partial<Task>) => {
+    return run(client("/tasks", { data: param }));
+  };
   return {
-    ...rest
+    refresh,
+    ...rest,
   };
 };
 
@@ -30,14 +35,27 @@ export const useTask = (id?: number) => {
 
 export const useAddTask = (queryKey: QueryKey) => {
   const client = useHttp();
-  return useMutation(
-    (params: Partial<Task>) =>
+  // return useMutation(
+  //   (params: Partial<Task>) =>
+  //     client(`/tasks`, {
+  //       data: params,
+  //       method: "POST",
+  //     }),
+  //   useAddConfig(queryKey)
+  // );
+  const { run, ...rest } = useAsync<Task>(undefined, { isThrowError: true });
+  const mutate = (params: Partial<Task>) => {
+    return run(
       client(`/tasks`, {
         data: params,
         method: "POST",
-      }),
-    useAddConfig(queryKey)
-  );
+      })
+    );
+  };
+  return {
+    mutate,
+    ...rest,
+  };
 };
 
 export const useEditTask = (queryKey: QueryKey) => {

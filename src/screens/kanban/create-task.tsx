@@ -1,25 +1,27 @@
 import { Card, Input } from "antd";
 import React, { useEffect, useState } from "react";
+import { Task } from "types/task";
 import { useAddTask } from "utils/task";
-import { useProjectIdInUrl, useTaskQueryKey } from "./utils";
+import { useProjectInUrl, useTaskQueryKey } from "./utils";
 
-export const CreateTask = ({ kanbanId }: { kanbanId: number }) => {
+export const CreateTask = ({ kanbanId,handleRefresh }: { kanbanId: number, handleRefresh: ()=>void }) => {
   const [name, setName] = useState("");
   const [inputMode, setInputMode] = useState(false);
   const { mutate: addTask } = useAddTask(useTaskQueryKey());
-  const projectId = useProjectIdInUrl();
+  const {data:currentProject} = useProjectInUrl()
   const toggle = () => {
     setInputMode((state) => !state);
   };
-  const submit = () => {
-    addTask({ name, projectId, kanbanId });
+  const submit = async () => {
+    await addTask({ name, projectId:currentProject?.id, kanbanId , status:1 , projectName:currentProject?.name});
+    handleRefresh()
     setInputMode(false);
     setName("");
   };
   useEffect(() => {
     setName("");
   }, [inputMode]);
-  if (!inputMode) return <div onClick={toggle}>+创建事务</div>;
+  if (!inputMode) return <div onClick={toggle}>+创建任务</div>;
   return (
     <Card>
       <Input

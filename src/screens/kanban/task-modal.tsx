@@ -5,9 +5,8 @@ import { ErrorBox } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
 import React, { useEffect, useMemo } from "react";
-import { useWorkQueryKey } from "screens/works/utils";
 import { useEditTask } from "utils/task";
-import { useProjectIdInUrl, useTaskModal, useTaskQueryKey } from "./utils";
+import { useProjectInUrl, useTaskModal, useTaskQueryKey } from "./utils";
 
 const layout = {
   labelCol: { span: 8 },
@@ -15,9 +14,9 @@ const layout = {
 };
 export const TaskModal = () => {
   const { editingTaskId, error, editingTask, isLoading, close } = useTaskModal();
-  const taskQueryKey = useTaskQueryKey()
-  const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(taskQueryKey);
+  const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(useTaskQueryKey());
   const [form] = useForm();
+  const {data:currentProject} = useProjectInUrl()
 
   const onCancel = () => {
     close();
@@ -28,8 +27,8 @@ export const TaskModal = () => {
       ...editingTask,
       ...form.getFieldsValue(),
       status: editingTask?.status ? editingTask?.status : 1,
+      projectName: editingTask?.projectName ? editingTask?.projectName : (currentProject ? currentProject.name : '')
     });
-
     close();
     form.resetFields();
   };

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Card, Dropdown, Button, Menu, Modal } from "antd";
 import { Row } from "components/lib";
-import React from "react";
+import React, { useState } from "react";
 import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 import { useTasks } from "utils/task";
@@ -15,8 +15,12 @@ import { useUrlParams } from "utils/url";
 import { Mark } from "components/mark";
 
 export const KanbanColumn = ({ kanban, ...props }: { kanban: Kanban }) => {
-  const { data: allTasks } = useTasks(useTaskSearchParams());
-  const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+  const taskSearchParams = useTaskSearchParams();
+  const { data: allTasks, refresh } = useTasks(taskSearchParams);
+  const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id) || [];
+  const handleRefresh = () => {
+    refresh(taskSearchParams);
+  };
   return (
     <Container {...props}>
       <Row between={true}>
@@ -29,7 +33,10 @@ export const KanbanColumn = ({ kanban, ...props }: { kanban: Kanban }) => {
             <TaskCard task={task} key={task.id}></TaskCard>
           </div>
         ))}
-        <CreateTask kanbanId={kanban.id}></CreateTask>
+        <CreateTask
+          kanbanId={kanban.id}
+          handleRefresh={handleRefresh}
+        ></CreateTask>
       </TasksContainer>
     </Container>
   );
@@ -46,9 +53,13 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 
 const TaskCard = ({ task }: { task: Task }) => {
   const [{ name: keyword }] = useUrlParams(["name"]);
-  const {startEdit} = useTaskModal()
+  const { startEdit } = useTaskModal();
   return (
-    <Card onClick={() => startEdit(task.id)} style={{ marginBottom: "0.5rem", cursor: "pointer" }} key={task.id}>
+    <Card
+      onClick={() => startEdit(task.id)}
+      style={{ marginBottom: "0.5rem", cursor: "pointer" }}
+      key={task.id}
+    >
       <p>
         <Mark keyword={keyword} name={task.name} />
       </p>
