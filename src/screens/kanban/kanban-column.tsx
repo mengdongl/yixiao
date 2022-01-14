@@ -16,10 +16,10 @@ import { Mark } from "components/mark";
 
 export const KanbanColumn = ({ kanban, ...props }: { kanban: Kanban }) => {
   const taskSearchParams = useTaskSearchParams();
-  const { data: allTasks, refresh } = useTasks(taskSearchParams);
+  const { data: allTasks } = useTasks(taskSearchParams);
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id) || [];
   const handleRefresh = () => {
-    refresh(taskSearchParams);
+    // refresh(taskSearchParams);
   };
   return (
     <Container {...props}>

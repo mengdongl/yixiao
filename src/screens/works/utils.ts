@@ -1,6 +1,4 @@
-import { useAuth } from "context/auth-context";
 import { useMemo } from "react";
-import { cleanObject } from "utils";
 import { useUrlParams } from "utils/url";
 export const useWorksSearchParams = () => {
   const [param] = useUrlParams(["taskFrom", "status", "typeId"]);

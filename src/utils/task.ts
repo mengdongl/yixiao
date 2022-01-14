@@ -7,9 +7,9 @@ import { useAsync } from "./use-async";
 import { useCallback, useEffect } from "react";
 export const useTasks = (param?: Partial<Task>) => {
   const client = useHttp();
-  // return useQuery<Task[]>(["tasks", cleanObject(param)], () =>
-  //   client("/tasks", { data: param })
-  // );
+  return useQuery<Task[]>(["tasks", cleanObject(param)], ({queryKey}) =>
+    client("/tasks", { data: queryKey[1] as object })
+  );
   const { run, ...rest } = useAsync<Task[]>(undefined, {
     isThrowError: true,
   });
@@ -35,14 +35,14 @@ export const useTask = (id?: number) => {
 
 export const useAddTask = (queryKey: QueryKey) => {
   const client = useHttp();
-  // return useMutation(
-  //   (params: Partial<Task>) =>
-  //     client(`/tasks`, {
-  //       data: params,
-  //       method: "POST",
-  //     }),
-  //   useAddConfig(queryKey)
-  // );
+  return useMutation(
+    (params: Partial<Task>) =>
+      client(`/tasks`, {
+        data: params,
+        method: "POST",
+      }),
+    useAddConfig(queryKey)
+  );
   const { run, ...rest } = useAsync<Task>(undefined, { isThrowError: true });
   const mutate = (params: Partial<Task>) => {
     return run(
@@ -60,25 +60,25 @@ export const useAddTask = (queryKey: QueryKey) => {
 
 export const useEditTask = (queryKey: QueryKey) => {
   const client = useHttp();
-  // return useMutation(
-  //   (params: Partial<Task>) =>
-  //     client(`/tasks/${params.id}`, {
-  //       method: "PATCH",
-  //       data: params,
-  //     }),
-  //   useEditConfig(queryKey)
-  // );
-  const { run, isLoading } = useAsync(undefined, { isThrowError: true });
-
-  const mutateAsync = useCallback(
-    (params: Partial<Task>) => {
-      run(client(`/tasks/${params.id}`, { method: "PATCH", data: params }));
-    },
-    [run, client]
+  return useMutation(
+    (params: Partial<Task>) =>
+      client(`/tasks/${params.id}`, {
+        method: "PATCH",
+        data: params,
+      }),
+    useEditConfig(queryKey)
   );
+  // const { run, isLoading } = useAsync(undefined, { isThrowError: true });
 
-  return {
-    mutateAsync,
-    isLoading,
-  };
+  // const mutateAsync = useCallback(
+  //   (params: Partial<Task>) => {
+  //     run(client(`/tasks/${params.id}`, { method: "PATCH", data: params }));
+  //   },
+  //   [run, client]
+  // );
+
+  // return {
+  //   mutateAsync,
+  //   isLoading,
+  // };
 };

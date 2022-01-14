@@ -17,7 +17,6 @@ export const TaskModal = () => {
   const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(useTaskQueryKey());
   const [form] = useForm();
   const {data:currentProject} = useProjectInUrl()
-
   const onCancel = () => {
     close();
     form.resetFields();

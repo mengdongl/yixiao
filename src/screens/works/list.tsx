@@ -18,13 +18,15 @@ export const List = ({
   taskTypes: TaskType[];
 }) => {
   const { user } = useAuth();
-  const param = useWorksSearchParams()
-  const paramMemo = useMemo(() => ({
-    typeId: param.typeId ? param.typeId :taskTypes?.[0].id,
-    taskFrom:param.taskFrom,
-    status:param.status,
-  }),[param])
-  const { data: tasks, isLoading } = useTasks(paramMemo);
+//   const param = useWorksSearchParams()
+//   const paramMemo = useMemo(() => ({
+//     typeId: param.typeId ? param.typeId :taskTypes?.[0].id,
+//     taskFrom:param.taskFrom,
+//     status:param.status,
+//   }),[param])
+  const taskSearchParams = useTaskSearchParams()
+  taskSearchParams.typeId = taskSearchParams.typeId ? taskSearchParams.typeId :taskTypes?.[0].id
+  const { data: tasks, isLoading } = useTasks(taskSearchParams);
   const { taskStatus: statusList } = useContext(WorkListContext);
   const { startEdit } = useTaskModal();
   const columns: ColumnsType<Task> = [
