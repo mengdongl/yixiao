@@ -4,7 +4,7 @@ import { EpicSelect } from "components/epic-select";
 import { ErrorBox } from "components/lib";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useEditTask } from "utils/task";
 import { useProjectInUrl, useTaskModal, useTaskQueryKey } from "./utils";
 

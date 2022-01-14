@@ -1,23 +1,18 @@
 import styled from "@emotion/styled";
-import { Button, Card, Col, Progress, Row, Spin } from "antd";
+import { Card, Col, Progress, Row, Spin } from "antd";
 import React, { useContext } from "react";
-import { useQuery } from "react-query";
 import { useNavigate } from "react-router";
-import { TaskModal } from "screens/kanban/task-modal";
 import { Project } from "types/project";
-import { Task } from "types/task";
 import { User } from "types/User";
-import { useHttp } from "utils/http";
 import { useProjects, useProjectTypes } from "utils/project";
 import { useUser } from "utils/user";
-import { useWorkQueryKey } from "./utils";
 import { WorkList } from "./work-list";
 
 export const WorkListContext = React.createContext<{
   users: User[];
   projectTypes: { name: string; id: number }[];
-  taskStatus:{name:string,id:number}[]
-}>({ users: [], projectTypes: [], taskStatus:[] });
+  taskStatus: { name: string; id: number }[];
+}>({ users: [], projectTypes: [], taskStatus: [] });
 export const WorkListScreen = () => {
   const { data: users } = useUser();
   const { data: projectTypes } = useProjectTypes();
@@ -28,7 +23,11 @@ export const WorkListScreen = () => {
         value={{
           users: users ? users : [],
           projectTypes: projectTypes ? projectTypes : [],
-          taskStatus:[{name:'新建',id:1},{name:'进行中',id:2},{name:'完成',id:3}]
+          taskStatus: [
+            { name: "新建", id: 1 },
+            { name: "进行中", id: 2 },
+            { name: "完成", id: 3 },
+          ],
         }}
       >
         <Top>
@@ -64,17 +63,19 @@ export const ProjectItems = () => {
           </Col>
         );
       })}
-      <Col span={3}>
-        <Card
-          hoverable={true}
-          bodyStyle={{ paddingLeft: 0, paddingRight: 0, textAlign: "center" }}
-          onClick={() => {
-            handleNav("/projects");
-          }}
-        >
-          ...
-        </Card>
-      </Col>
+      {list.length >= 3 ? (
+        <Col span={3}>
+          <Card
+            hoverable={true}
+            bodyStyle={{ paddingLeft: 0, paddingRight: 0, textAlign: "center" }}
+            onClick={() => {
+              handleNav("/projects");
+            }}
+          >
+            ...
+          </Card>
+        </Col>
+      ) : null}
     </Row>
   );
 };

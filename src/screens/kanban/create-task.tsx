@@ -1,6 +1,5 @@
 import { Card, Input } from "antd";
 import React, { useEffect, useState } from "react";
-import { Task } from "types/task";
 import { useAddTask } from "utils/task";
 import { useProjectInUrl, useTaskQueryKey } from "./utils";
 

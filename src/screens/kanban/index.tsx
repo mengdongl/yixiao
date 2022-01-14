@@ -7,7 +7,7 @@ import { CreateKanban } from "./create-kanban";
 import { KanbanColumn } from "./kanban-column";
 import { SearchPanel } from "./search-panel";
 import { TaskModal } from "./task-modal";
-import { useKanbanSearchParams, useProjectInUrl, useTaskQueryKey } from "./utils";
+import { useKanbanSearchParams, useProjectInUrl } from "./utils";
 
 export const KanbanScreen = () => {
   const { data: currentProject } = useProjectInUrl();

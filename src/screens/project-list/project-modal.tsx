@@ -33,7 +33,7 @@ export const ProjectModal = () => {
     if(!editingProject) {
       form.setFields([{name:'type',value:1}])
     }
-  },[projectModalOpen,form])
+  },[projectModalOpen,form,editingProject])
   useEffect(()=>{
     form.setFieldsValue(editingProject)
   },[editingProject,form])

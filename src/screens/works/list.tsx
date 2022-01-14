@@ -1,15 +1,13 @@
 import { Table, Tag } from "antd";
 import { TagOutlined } from "@ant-design/icons";
 import { useAuth } from "context/auth-context";
-import React, { useContext, useMemo } from "react";
+import React, { useContext } from "react";
 import { useTasks } from "utils/task";
-import { ColumnsType, TableProps } from "antd/lib/table";
+import { ColumnsType } from "antd/lib/table";
 import { Task } from "types/task";
 import { TaskType } from "types/task-type";
 import { WorkListContext } from ".";
 import { useTaskModal, useTaskSearchParams } from "screens/kanban/utils";
-import { cleanObject } from "utils";
-import { useWorksSearchParams } from "./utils";
 
 export const List = ({
   taskTypes,

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Card, Dropdown, Button, Menu, Modal } from "antd";
 import { Row } from "components/lib";
-import React, { useState } from "react";
+import React from "react";
 import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 import { useTasks } from "utils/task";
