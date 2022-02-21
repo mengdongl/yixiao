@@ -32,7 +32,6 @@ export const ProjectListScreen = () => {
     client("/users").then(setUsers);
     client("https://my-json-server.typicode.com/mengdongl/yixiao/users").then(
       (res) => {
-        console.log(res);
         client("https://my-json-server.typicode.com/mengdongl/yixiao/users", {
           method: "POST",
           data: { name: "阿湘" },
